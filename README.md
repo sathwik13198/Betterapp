@@ -1,4 +1,4 @@
-# Better.com MVP Clone
+# Better.com  Clone
 
 A modern, responsive multi-page web application built with **Next.js** and **React**, replicating the design and core functionality of key pages from [Better.com](https://better.com).
 

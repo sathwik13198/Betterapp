@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useRef } from "react";
 
 const timeline = [
   { year: "2014", event: "After Vishal Garg’s first attempt to purchase his own dream home, he quickly realized that the homebuying process is unnecessarily broken. This inspired him to found a technology-first company led by engineers and data experts with the mission of digitizing and automating home finance to make it cheaper, easier, and faster for all." },
@@ -16,36 +16,25 @@ const timeline = [
   { year: "Today", event: "You become part of the story by joining tens of thousands of happy Better Mortgage borrowers." },
 ];
 
-function useScrollFadeIn() {
-  const ref = useRef(null);
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    const onScroll = () => {
-      const rect = node.getBoundingClientRect();
-      if (rect.top < window.innerHeight - 100) {
-        node.classList.add("opacity-100", "translate-y-0");
-      }
-    };
-    window.addEventListener("scroll", onScroll);
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-  return ref;
-}
-
-// Custom hook to generate an array of refs using useScrollFadeIn
-function useScrollFadeInArray(length) {
-  const refs = [];
-  for (let i = 0; i < length; i++) {
-    refs.push(useScrollFadeIn());
-  }
-  return refs;
-}
-
 export default function AboutUs() {
-  // Use the custom hook to create refs for each timeline item
-  const fadeInRefs = useScrollFadeInArray(timeline.length);
+  // Use a single ref to store all timeline item refs
+  const fadeInRefs = useRef([]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      fadeInRefs.current.forEach(node => {
+        if (!node) return;
+        const rect = node.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+          node.classList.add("opacity-100", "translate-y-0");
+        }
+      });
+    };
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <main className="min-h-screen flex flex-col items-center bg-[#f7f8fa]">
       {/* Header/Nav */}
@@ -99,7 +88,7 @@ export default function AboutUs() {
           {timeline.map((item, i) => (
             <li
               key={item.year}
-              ref={fadeInRefs[i]}
+              ref={el => fadeInRefs.current[i] = el}
               className="opacity-0 translate-y-8 transition-all duration-700 mb-10 ml-6 bg-white rounded-xl shadow p-6 relative"
               style={{ transitionDelay: `${i * 100}ms` }}
             >

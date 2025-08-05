@@ -3,48 +3,52 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import Image from "next/image";
-
-const navSections = [
-  { label: "Home", desc: "Back to the homepage.", href: "/" },
-  { label: "About Us", desc: "Learn about our mission and team.", href: "/about-us" },
-  { label: "Mortgage Calculator", desc: "Estimate your monthly payment.", href: "/mortgage-calculator" },
-  { label: "Start", desc: "Begin your mortgage journey.", href: "/start" },
-];
-
-const features = [
-  {
-    title: "One Day Mortgage®",
-    desc: "Go from locked rate to Commitment Letter in a single day. Traditional lenders take weeks.",
-    icon: "🏠",
-  },
-  {
-    title: "Better HELOC",
-    desc: "Access up to 90% of your home equity as cash in as little as 7 days.",
-    icon: "💵",
-  },
-  {
-    title: "Insurance",
-    desc: "Shop, bundle, and save on insurance coverage for home, auto, life, and more.",
-    icon: "🛡️",
-  },
-];
-
-const faqs = [
-  {
-    q: "How does AI mortgage lending work?",
-    a: "Our platform uses AI to streamline approvals, lower rates, and speed up the process from application to closing.",
-  },
-  {
-    q: "What is One Day Mortgage®?",
-    a: "Qualified customers can get a Commitment Letter in just one day after locking their rate.",
-  },
-  {
-    q: "How do I get started?",
-    a: "Click the 'Get started' button and complete the quick onboarding. No hard credit check required.",
-  },
-];
+import { useTranslation } from "../lib/i18n";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 
 export default function Home() {
+  const { t } = useTranslation();
+
+  const navSections = [
+    { label: t.home, desc: t.homeDesc, href: "/" },
+    { label: t.aboutUs, desc: t.aboutUsDesc, href: "/about-us" },
+    { label: t.mortgageCalculator, desc: t.mortgageCalculatorDesc, href: "/mortgage-calculator" },
+    { label: t.start, desc: t.startDesc, href: "/start" },
+  ];
+
+  const features = [
+    {
+      title: t.oneDayMortgage,
+      desc: t.oneDayMortgageDesc,
+      icon: "🏠",
+    },
+    {
+      title: t.betterHeloc,
+      desc: t.betterHelocDesc,
+      icon: "💵",
+    },
+    {
+      title: t.insurance,
+      desc: t.insuranceDesc,
+      icon: "🛡️",
+    },
+  ];
+
+  const faqs = [
+    {
+      q: t.aiMortgageQuestion,
+      a: t.aiMortgageAnswer,
+    },
+    {
+      q: t.oneDayQuestion,
+      a: t.oneDayAnswer,
+    },
+    {
+      q: t.getStartedQuestion,
+      a: t.getStartedAnswer,
+    },
+  ];
+
   useEffect(() => {
     const cards = document.querySelectorAll(".fade-in-card");
     const onScroll = () => {
@@ -66,26 +70,29 @@ export default function Home() {
       <header className="w-full bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-4 md:px-8">
           <div className="text-2xl font-bold text-[#171717]">Better</div>
-          <Link href="/start" className="ml-4 bg-[#1a73e8] hover:bg-[#155ab6] text-white font-semibold rounded-full px-6 py-2 text-base shadow transition-colors duration-200">Get started</Link>
+          <div className="flex items-center gap-4">
+            <LanguageSwitcher />
+            <Link href="/start" className="bg-[#1a73e8] hover:bg-[#155ab6] text-white font-semibold rounded-full px-6 py-2 text-base shadow transition-colors duration-200">{t.getStarted}</Link>
+          </div>
         </div>
       </header>
 
       {/* Hero Section */}
       <section className="w-full flex flex-col items-center justify-center py-16 px-4 bg-gradient-to-b from-white to-[#f7f8fa]">
         <h1 className="text-4xl md:text-6xl font-extrabold text-center text-[#171717] mb-6 leading-tight max-w-3xl">
-          The first <span className="text-[#1a73e8]">AI-powered Mortgage</span>
+          {t.heroTitle}
         </h1>
         <p className="text-lg md:text-2xl text-center text-[#444] mb-6 max-w-2xl">
-          Our tech unlocks lower rates, higher chances of approval, and a lightning‑fast process from approval to closing. Over $100 billion funded.
+          {t.heroSubtitle}
         </p>
         <div className="flex flex-col md:flex-row items-center gap-4 mb-4">
           <Link
             href="/start"
             className="bg-[#1a73e8] hover:bg-[#155ab6] text-white font-semibold rounded-full px-8 py-4 text-lg shadow transition-colors duration-200"
           >
-            Get started
+            {t.getStarted}
           </Link>
-          <span className="bg-[#e8f0fe] text-[#1a73e8] rounded-full px-4 py-2 text-base font-medium ml-0 md:ml-4">3 min | No hard credit check</span>
+          <span className="bg-[#e8f0fe] text-[#1a73e8] rounded-full px-4 py-2 text-base font-medium ml-0 md:ml-4">{t.noHardCreditCheck}</span>
         </div>
         <div className="w-full max-w-xl flex flex-col items-center mt-8">
           <Image src="/hero.png" alt="Better logo and arrow" width={320} height={320} className="rounded-xl shadow-lg" priority />
@@ -127,15 +134,15 @@ export default function Home() {
         <div className="flex items-center gap-4">
           <span className="text-3xl">⭐</span>
           <div>
-            <div className="text-2xl font-bold text-[#171717]">Excellent <span className="text-[#1a73e8]">4.4</span> out of 5</div>
-            <div className="text-[#444] text-sm">Based on thousands of reviews</div>
+            <div className="text-2xl font-bold text-[#171717]">{t.excellentRating} <span className="text-[#1a73e8]">4.4</span> {t.outOfFive}</div>
+            <div className="text-[#444] text-sm">{t.basedOnReviews}</div>
           </div>
         </div>
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-[#e0e7ef]" />
           <div className="w-12 h-12 rounded-full bg-[#e0e7ef]" />
           <div className="w-12 h-12 rounded-full bg-[#e0e7ef]" />
-          <div className="ml-4 text-lg text-[#171717] font-semibold">Over $100 billion funded</div>
+          <div className="ml-4 text-lg text-[#171717] font-semibold">{t.overBillionFunded}</div>
         </div>
       </section>
 
@@ -151,14 +158,14 @@ export default function Home() {
           ))}
         </div>
         <div className="text-center mt-8 text-[#444]">
-          <div>Call us anytime at <a href="tel:4155238837" className="text-[#1a73e8] underline">(415) 523-8837</a></div>
-          <div>Email: <a href="mailto:hello@better.com" className="text-[#1a73e8] underline">hello@better.com</a></div>
+          <div>{t.callUs} <a href="tel:4155238837" className="text-[#1a73e8] underline">(415) 523-8837</a></div>
+          <div>{t.email} <a href="mailto:hello@better.com" className="text-[#1a73e8] underline">hello@better.com</a></div>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="w-full py-8 text-center text-sm text-[#888] bg-white border-t mt-16">
-        © 2025 Better Home & Finance Holding Company.
+        {t.copyright}
       </footer>
     </main>
   );
